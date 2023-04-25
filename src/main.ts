@@ -2,6 +2,7 @@ import { WechatyBuilder } from "wechaty";
 import { FileBox } from 'file-box';
 import QRCode from "qrcode";
 import { Bot } from "./bot.js";
+import { displayMilliseconds } from "./utils.js";
 
 import express, { Application, Request, Response } from "express";
 
@@ -51,28 +52,35 @@ async function main() {
 }
 main();
 
-app.post("/wechat-mj/notify", async (req: Request, res: Response): Promise<Response> => {
-  const type = req.body.type;
-  const roomName = req.body.room;
-  const userName = req.body.user;
+app.post("/notify", async (req: Request, res: Response): Promise<Response> => {
+  const state = req.body.state;
+  const i = state.indexOf(":");
+  const roomName = state.substring(0, i);
+  const userName = state.substring(i + 1);
   const room = await client.Room.find({ topic: roomName });
   if (!room) {
     return res.status(404).send("room not found");
   }
-  if ('created' == type) {
-    const prompt = req.body.prompt;
-    const messageId = req.body.messageId;
-    await room.say(`@${userName} \n✅ 您的任务已提交\n✨ Prompt: ${prompt}\n🌟 ID: ${messageId}\n🚀 正在快速处理中,请稍后!`);
-  } else if ('image' == type) {
-    const messageId = req.body.messageId;
-    await room.say(`@${userName} \n🎨 绘画成功!\n📨 ID: ${messageId}\n🪄 变换:\n[ U1 ] [ U2 ] [ U3 ] [ U4 ]\n[ V1 ] [ V2 ] [ V3 ] [ V4 ]\n✏️ 可使用 [/up-任务ID-操作] 进行变换\n/up ${messageId} U1`);
-    const image = FileBox.fromUrl(req.body.imageUrl);
-    room.say(image);
-  } else if ('up' == type) {
-    const image = FileBox.fromUrl(req.body.imageUrl);
-    room.say(image);
-  } else {
-    return res.status(405).send("type not supported");
+  const action = req.body.action;
+  const status = req.body.status;
+  const description = req.body.description;
+  if (status == 'IN_PROGRESS') {
+    room.say(`@${userName} \n✅ 您的任务已提交\n✨ ${description}\n🚀 正在快速处理中，请稍后`);
+  } else if (status == 'FAILURE') {
+    room.say(`@${userName} \n❌ 执行失败\n✨ ${description}`);
+  } else if (status == 'SUCCESS') {
+    const time = req.body.finishDate - req.body.submitDate;
+    if (action == 'UPSCALE') {
+      await room.say(`@${userName} \n🎨 图片放大，用时: ${displayMilliseconds(time)}\n✨ ${description}`);
+      const image = FileBox.fromUrl(req.body.imageUrl);
+      room.say(image);
+    } else {
+      const taskId = req.body.id;
+      const prompt = req.body.prompt;
+      await room.say(`@${userName} \n🎨 ${action == 'IMAGINE' ? '绘图' : '变换'}成功，用时: ${displayMilliseconds(time)}\n✨ Prompt: ${prompt}\n📨 任务ID: ${taskId}\n🪄 放大 U1～U4 ，变换 V1~V4\n✏️ 使用[/up 任务ID 操作]\n/up ${taskId} U1`);
+      const image = FileBox.fromUrl(req.body.imageUrl);
+      room.say(image);
+    }
   }
   return res.status(200).send({ code: 1 });
 });

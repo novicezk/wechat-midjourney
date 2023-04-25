@@ -25,18 +25,18 @@ export class Bot {
                 "------------------------------\n"
                 + "🎨 生成图片命令\n"
                 + "输入: /imagine prompt\n"
-                + "<prompt> 即你向mj提的绘画需求\n"
+                + "prompt 即你向mj提的绘画需求\n"
                 + "------------------------------\n"
                 + "🌈 变换图片命令\n"
-                + "输入: /up 1092785355389943801 U1\n"
-                + "输入: /up 1092785355389943801 V1\n"
-                + "<1092785355389943801> 代表消息ID，<U>代表放大，<V>代表细致变化，<1>代表第几张图\n"
+                + "输入: /up 3214528596600076 U1\n"
+                + "输入: /up 3214528596600076 V1\n"
+                + "3214528596600076代表任务ID，U代表放大，V代表细致变化，1代表第1张图\n"
                 + "------------------------------\n"
                 + "📕 附加参数 \n"
                 + "1.解释：附加参数指的是在prompt后携带的参数，可以使你的绘画更加别具一格\n"
                 + "· 输入 /imagine prompt --v 5 --ar 16:9\n"
                 + "2.使用：需要使用--key value ，key和value之间需要空格隔开，每个附加参数之间也需要空格隔开\n"
-                + "3.详解：上述附加参数解释 <v>版本key <5>版本号 <ar>比例key，<16:9>比例value\n"
+                + "3.详解：上述附加参数解释 版本 5，比例 16:9\n"
                 + "------------------------------\n"
                 + "📗 附加参数列表\n"
                 + "1.(--version) 或 (--v) 《版本》 参数 1，2，3，4，5 默认5，不可与niji同用\n"
@@ -68,21 +68,25 @@ export class Bot {
             return;
         }
         let errorMsg;
-        if (text.startsWith('/imagine ')) {
+        if (text.startsWith('/up ')) {
+            const content = text.substring(4);
+            errorMsg = await submitTask({
+                state: topic + ':' + talkerName,
+                action: "UV",
+                content: content
+            });
+        } else if (text.startsWith('/imagine ')) {
             const prompt = text.substring(9);
             errorMsg = await submitTask({
-                room: topic,
-                user: talkerName,
-                type: "IMAGINE",
+                state: topic + ':' + talkerName,
+                action: "IMAGINE",
                 prompt: prompt
             });
-        } else if (text.startsWith('/up ')) {
-            const prompt = text.substring(4);
+        } else {
             errorMsg = await submitTask({
-                room: topic,
-                user: talkerName,
-                type: "UP",
-                prompt: prompt
+                state: topic + ':' + talkerName,
+                action: "IMAGINE",
+                prompt: text
             });
         }
         if (errorMsg) {
