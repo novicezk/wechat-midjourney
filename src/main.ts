@@ -26,9 +26,7 @@ async function main() {
   client.on("scan", async (qrcode) => {
     const url = `https://wechaty.js.org/qrcode/${encodeURIComponent(qrcode)}`;
     console.log(`scan qrcode to login: ${url}`);
-    console.log(
-      await QRCode.toString(qrcode, { type: "terminal", small: true })
-    );
+    console.log(await QRCode.toString(qrcode, { type: "terminal", small: true }));
   }).on("login", async (user) => {
     console.log(`user ${user.name()} login success`);
     bot.setBotName(user.name());
@@ -40,14 +38,16 @@ async function main() {
       // 暂不处理私聊信息
       return;
     }
-    bot.onMessage(message);
+    try {
+      bot.onMessage(message);
+    } catch (e) {
+      console.error(`bot on message error: ${e}`);
+    }
   });
   try {
     await client.start();
   } catch (e) {
-    console.error(
-      `wechat client start failed: ${e}`
-    );
+    console.error(`wechat client start failed: ${e}`);
   }
 }
 main();
