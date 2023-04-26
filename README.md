@@ -9,7 +9,7 @@
 
 ## 快速启动
 1. 下载项目
-2. `cp .env.example .env` ，并更改
+2. `cp .env.example .env` ，并更改配置项
 3. 启动项目
 ```sh
 npm install
@@ -18,5 +18,5 @@ npm run dev
 4. 微信扫码登录
 
 ## .env 配置项
-- MJ_PROXY_ENDPOINT: midjourney代理服务的地址
-- BLOCK_WORDS: 敏感词，英文逗号分隔
+- `MJ_PROXY_ENDPOINT` midjourney代理服务的地址
+- `BLOCK_WORDS` 敏感词，英文逗号分隔

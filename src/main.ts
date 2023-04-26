@@ -67,9 +67,9 @@ app.post("/notify", async (req: Request, res: Response): Promise<Response> => {
   if (status == 'IN_PROGRESS') {
     room.say(`@${userName} \n✅ 您的任务已提交\n✨ ${description}\n🚀 正在快速处理中，请稍后`);
   } else if (status == 'FAILURE') {
-    room.say(`@${userName} \n❌ 执行失败\n✨ ${description}`);
+    room.say(`@${userName} \n❌ 任务执行失败\n✨ ${description}`);
   } else if (status == 'SUCCESS') {
-    const time = req.body.finishDate - req.body.submitDate;
+    const time = req.body.finishTime - req.body.submitTime;
     if (action == 'UPSCALE') {
       await room.say(`@${userName} \n🎨 图片放大，用时: ${displayMilliseconds(time)}\n✨ ${description}`);
       const image = FileBox.fromUrl(req.body.imageUrl);
@@ -77,7 +77,7 @@ app.post("/notify", async (req: Request, res: Response): Promise<Response> => {
     } else {
       const taskId = req.body.id;
       const prompt = req.body.prompt;
-      await room.say(`@${userName} \n🎨 ${action == 'IMAGINE' ? '绘图' : '变换'}成功，用时: ${displayMilliseconds(time)}\n✨ Prompt: ${prompt}\n📨 任务ID: ${taskId}\n🪄 放大 U1～U4 ，变换 V1~V4\n✏️ 使用[/up 任务ID 操作]\n/up ${taskId} U1`);
+      await room.say(`@${userName} \n🎨 ${action == 'IMAGINE' ? '绘图' : '变换'}成功，用时 ${displayMilliseconds(time)}\n✨ Prompt: ${prompt}\n📨 任务ID: ${taskId}\n🪄 放大 U1～U4 ，变换 V1～V4\n✏️ 使用[/up 任务ID 操作]\n/up ${taskId} U1`);
       const image = FileBox.fromUrl(req.body.imageUrl);
       room.say(image);
     }
