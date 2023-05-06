@@ -11,7 +11,7 @@
 
 1. 下载镜像
 ```shell
-docker pull novicezk/wechat-midjourney:1.0
+docker pull novicezk/wechat-midjourney:1.0.1
 ```
 2. 启动容器，并设置参数
 ```shell
@@ -19,7 +19,7 @@ docker run -d --name wechat-midjourney \
  -p 4120:4120 \
  -e MJ_PROXY_ENDPOINT=http://172.17.0.1:8080/mj \
  --restart=always \
- novicezk/wechat-midjourney:1.0
+ novicezk/wechat-midjourney:1.0.1
 ```
 3. 查看启动日志，微信扫描二维码，若二维码无法扫码，复制二维码链接浏览器打开扫码
 ```shell
@@ -33,7 +33,7 @@ npm install
 # 可能执行错误，缺少library，按提示解决
 cp .env.example .env
 # 更改配置项，启动服务
-npm run dev
+npm run serve
 ```
 
 ## 配置项

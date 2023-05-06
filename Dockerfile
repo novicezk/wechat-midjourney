@@ -53,4 +53,4 @@ RUN cp .env.example .env
 
 EXPOSE 4120
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "serve"]
