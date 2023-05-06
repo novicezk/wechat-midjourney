@@ -53,39 +53,29 @@ export class Bot {
         }
         const talkerName = talker.name();
         console.log(`${formatDateStandard(date)} - [${topic}] ${talkerName}: ${rawText}`);
-        if (!rawText.startsWith(`@${this.botName} `) && !rawText.startsWith('/imagine ') && !rawText.startsWith('/up ')) {
+        if (!rawText.startsWith('/imagine ') && !rawText.startsWith('/up ')) {
             return;
         }
-        let text = rawText;
-        if (text.startsWith(`@${this.botName} `)) {
-            text = text.substring(this.botName.length + 2);
-        }
-        if (isProhibited(text)) {
+        if (isProhibited(rawText)) {
             const content = `@${talkerName} \n❌ 任务被拒绝，可能包含违禁词`;
             await room.say(content);
             console.log(`${formatDateStandard(date)} - [${topic}] ${this.botName}: ${content}`);
             return;
         }
         let errorMsg;
-        if (text.startsWith('/up ')) {
-            const content = text.substring(4);
+        if (rawText.startsWith('/up ')) {
+            const content = rawText.substring(4);
             errorMsg = await submitTask({
                 state: topic + ':' + talkerName,
                 action: "UV",
                 content: content
             });
-        } else if (text.startsWith('/imagine ')) {
-            const prompt = text.substring(9);
+        } else if (rawText.startsWith('/imagine ')) {
+            const prompt = rawText.substring(9);
             errorMsg = await submitTask({
                 state: topic + ':' + talkerName,
                 action: "IMAGINE",
                 prompt: prompt
-            });
-        } else {
-            errorMsg = await submitTask({
-                state: topic + ':' + talkerName,
-                action: "IMAGINE",
-                prompt: text
             });
         }
         if (errorMsg) {
