@@ -26,7 +26,7 @@ export function isProhibited(text: string): boolean {
 
 export function isNonsense(talker: ContactInterface, messageType: PUPPET.types.Message, text: string): boolean {
   return messageType != PUPPET.types.Message.Text ||
-    // talker.self() ||
+    talker.self() ||
     talker.name() === "微信团队" ||
     text.includes("收到一条视频/语音聊天消息，请在手机上查看") ||
     text.includes("收到红包，请在手机上查看") ||
