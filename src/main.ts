@@ -78,7 +78,7 @@ app.post("/notify", async (req: Request, res: Response): Promise<Response> => {
 
         let image:FileBox;
 
-        if (config.httpProxy !== "") {
+        if (config.httpProxy == "") {
           image = FileBox.fromUrl(req.body.imageUrl);
         } else {
           const savedFileName = await downloadImage(req.body.imageUrl);
@@ -93,7 +93,7 @@ app.post("/notify", async (req: Request, res: Response): Promise<Response> => {
 
         let image:FileBox;
 
-        if (config.httpProxy !== "") {
+        if (config.httpProxy == "") {
           image = FileBox.fromUrl(req.body.imageUrl);
         } else {
           const savedFileName = await downloadImage(req.body.imageUrl);
