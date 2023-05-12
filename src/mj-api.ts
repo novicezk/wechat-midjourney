@@ -6,7 +6,7 @@ import * as fs from 'fs';
 
 import { Request } from "./request.js";
 
-const request =  new Request({})
+const request = new Request({})
 
 export async function submitTask(params: any): Promise<string> {
     let url = "/trigger/submit";
@@ -33,19 +33,19 @@ export async function submitTask(params: any): Promise<string> {
 
 
 export async function downloadImage(url: string): Promise<string> {
-  const response: AxiosResponse = await axios({
-    method: 'GET',
-    url: url,
-    responseType: 'arraybuffer',
-    httpsAgent: config.httpProxy!="" ?  new HttpsProxyAgent(config.httpProxy) : undefined,
-    timeout: 10000,
-  });
+    const response: AxiosResponse = await axios({
+        method: 'GET',
+        url: url,
+        responseType: 'arraybuffer',
+        httpsAgent: config.httpProxy != "" ? new HttpsProxyAgent(config.httpProxy) : undefined,
+        timeout: 10000,
+    });
 
-  const filename = url.split('/')!.pop()!;
+    const filename = url.split('/')!.pop()!;
 
-  // Write the image data to a file
-  fs.writeFileSync(config.imagesPath+'/'+filename, response.data, 'binary');
+    // Write the image data to a file
+    fs.writeFileSync(config.imagesPath + '/' + filename, response.data, 'binary');
 
-  // Return the filename as a string
-  return filename;
+    // Return the filename as a string
+    return filename;
 }
