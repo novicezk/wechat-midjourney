@@ -1,6 +1,7 @@
 import { Message } from "wechaty";
 import { isNonsense, isProhibited, formatDateStandard } from "./utils.js";
 import { submitTask } from "./mj-api.js";
+import { config } from "./config.js";
 
 export class Bot {
     botName: string = "MJBOT";
@@ -72,11 +73,15 @@ export class Bot {
             });
         } else if (rawText.startsWith('/imagine ')) {
             const prompt = rawText.substring(9);
-            errorMsg = await submitTask({
-                state: topic + ':' + talkerName,
-                action: "IMAGINE",
-                prompt: prompt
+            const notifyHook = config.notifyHook ? { notifyHook: config.notifyHook } : {};
+
+            const errorMsg = await submitTask({
+              state: `${topic}:${talkerName}`,
+              action: "IMAGINE",
+              prompt: prompt,
+              ...notifyHook
             });
+
         }
         if (errorMsg) {
             const content = `@${talkerName} \n❌ ${errorMsg}`;

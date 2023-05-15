@@ -6,6 +6,7 @@ export interface IConfig {
   blockWords: string[];
   httpProxy: string;
   imagesPath: String;
+  notifyHook: String;
 }
 
 export const config: IConfig = {
@@ -13,4 +14,5 @@ export const config: IConfig = {
   blockWords: process.env.BLOCK_WORDS?.split(",") || [],
   httpProxy: process.env.HTTP_PROXY || "",
   imagesPath: process.env.IMAGE_PATH || "",
+  notifyHook: process.env.NOFIFY_HOOK || "",
 };
