@@ -66,10 +66,13 @@ export class Bot {
         let errorMsg;
         if (rawText.startsWith('/up ')) {
             const content = rawText.substring(4);
+            const notifyHook = config.notifyHook ? { notifyHook: config.notifyHook } : {};
+
             errorMsg = await submitTask({
                 state: topic + ':' + talkerName,
                 action: "UV",
-                content: content
+                content: content,
+                ...notifyHook
             });
         } else if (rawText.startsWith('/imagine ')) {
             const prompt = rawText.substring(9);
