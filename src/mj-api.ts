@@ -1,5 +1,6 @@
 import { config } from "./config.js";
 import axios from 'axios';
+import { FileBox } from 'file-box';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { HttpsProxyAgent } from "https-proxy-agent"
 import * as fs from 'fs';
@@ -31,8 +32,7 @@ export async function submitTask(params: any): Promise<string> {
     }
 }
 
-
-export async function downloadImage(url: string): Promise<string> {
+export async function downloadImage(url: string): Promise<FileBox> {
     const response: AxiosResponse = await axios({
         method: 'GET',
         url: url,
@@ -42,10 +42,11 @@ export async function downloadImage(url: string): Promise<string> {
     });
 
     const filename = url.split('/')!.pop()!;
+    if (config.imagesPath!="") {
+      fs.writeFileSync(config.imagesPath + '/' + filename, response.data, 'binary');
+    }
+    const fileBuffer = Buffer.from(response.data, 'binary');
 
-    // Write the image data to a file
-    fs.writeFileSync(config.imagesPath + '/' + filename, response.data, 'binary');
+    return  FileBox.fromBuffer(fileBuffer, filename);
 
-    // Return the filename as a string
-    return filename;
 }

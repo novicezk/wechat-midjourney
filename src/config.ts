@@ -12,5 +12,5 @@ export const config: IConfig = {
   mjProxyEndpoint: process.env.MJ_PROXY_ENDPOINT || "http://localhost:8022/mj",
   blockWords: process.env.BLOCK_WORDS?.split(",") || [],
   httpProxy: process.env.HTTP_PROXY || "",
-  imagesPath: process.env.IMAGE_PATH || "./data",
+  imagesPath: process.env.IMAGE_PATH || "",
 };

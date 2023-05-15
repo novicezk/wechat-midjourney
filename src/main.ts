@@ -1,10 +1,8 @@
 import { WechatyBuilder } from "wechaty";
-import { FileBox } from 'file-box';
 import QRCode from "qrcode";
 import { Bot } from "./bot.js";
 import { displayMilliseconds } from "./utils.js";
 import { downloadImage } from "./mj-api.js";
-import { config } from "./config.js";
 
 import express, { Application, Request, Response } from "express";
 
@@ -76,30 +74,15 @@ app.post("/notify", async (req: Request, res: Response): Promise<Response> => {
       if (action == 'UPSCALE') {
         await room.say(`@${userName} \n🎨 图片放大，用时: ${displayMilliseconds(time)}\n✨ ${description}`);
 
-        let image:FileBox;
-
-        if (config.httpProxy == "") {
-          image = FileBox.fromUrl(req.body.imageUrl);
-        } else {
-          const savedFileName = await downloadImage(req.body.imageUrl);
-          image = FileBox.fromFile(savedFileName);
-        }
-
+        const image =  await downloadImage(req.body.imageUrl);
         room.say(image);
+
       } else {
         const taskId = req.body.id;
         const prompt = req.body.prompt;
         await room.say(`@${userName} \n🎨 ${action == 'IMAGINE' ? '绘图' : '变换'}成功，用时 ${displayMilliseconds(time)}\n✨ Prompt: ${prompt}\n📨 任务ID: ${taskId}\n🪄 放大 U1～U4 ，变换 V1～V4\n✏️ 使用[/up 任务ID 操作]\n/up ${taskId} U1`);
 
-        let image:FileBox;
-
-        if (config.httpProxy == "") {
-          image = FileBox.fromUrl(req.body.imageUrl);
-        } else {
-          const savedFileName = await downloadImage(req.body.imageUrl);
-          console.log(`saved`);
-          image = FileBox.fromFile(savedFileName);
-        }
+        const image = await downloadImage(req.body.imageUrl);
         room.say(image);
       }
     }
