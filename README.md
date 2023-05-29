@@ -5,7 +5,7 @@
 
 ## 注意事项
 - 依赖 [midjourney-proxy](https://github.com/novicezk/midjourney-proxy) 提供的api接口
-- 仅作为midjourney-proxy项目的示例应用场景，有问题需自行解决
+- 仅作为 midjourney-proxy 的示例应用场景，有问题需自行解决
 - 推荐使用docker启动；mac M或其他arm架构电脑，暂时使用npm启动
 
 ## 快速启动
@@ -36,6 +36,8 @@ docker run -d --name wechat-midjourney \
 ```shell
 docker logs -f -n 200 wechat-midjourney
 ```
+4. 扫码用户所在的微信群内，发送/help即可获取使用帮助
+
 ## npm启动
 ```shell
 git clone git@github.com:novicezk/wechat-midjourney.git
