@@ -113,6 +113,7 @@ export class MJApi {
           } else {
             image = FileBox.fromUrl(req.body.imageUrl);
           }
+          room.say(image);
         }
       }
       return res.status(200).send({ code: 1 });
