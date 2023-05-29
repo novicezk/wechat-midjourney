@@ -322,3 +322,4 @@ config.yaml
 .vscode
 
 data/
+.DS_Store
