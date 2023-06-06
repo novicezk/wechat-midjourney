@@ -91,7 +91,7 @@ export class MJApi {
       if (status == 'SUBMITTED') {
         room.say(`@${userName} \n✅ 您的任务已提交\n✨ ${description}\n🚀 正在快速处理中，请稍后`);
       } else if (status == 'FAILURE') {
-        room.say(`@${userName} \n❌ 任务执行失败\n✨ ${description}`);
+        room.say(`@${userName} \n❌ 任务执行失败\n✨ ${description}\n📒 失败原因: ${req.body.failReason}`);
       } else if (status == 'SUCCESS') {
         const time = req.body.finishTime - req.body.submitTime;
         if (action == 'UPSCALE') {
@@ -106,7 +106,7 @@ export class MJApi {
         } else {
           const taskId = req.body.id;
           const prompt = req.body.prompt;
-          await room.say(`@${userName} \n🎨 ${action == 'IMAGINE' ? '绘图' : '变换'}成功，用时 ${displayMilliseconds(time)}\n✨ Prompt: ${prompt}\n📨 任务ID: ${taskId}\n🪄 放大 U1～U4 ，变换 V1～V4\n✏️ 使用[/up 任务ID 操作]\n/up ${taskId} U1`);
+          await room.say(`@${userName} \n🎨 ${action == 'IMAGINE' ? '绘图' : '变换'}成功，用时 ${displayMilliseconds(time)}\n✨ Prompt: ${prompt}\n📨 任务ID: ${taskId}\n🪄 放大 U1～U4，变换 V1～V4\n✏️ 使用[/up 任务ID 操作]\n/up ${taskId} U1`);
           let image;
           if (config.httpProxy) {
             image = await this.proxyDownloadImage(req.body.imageUrl);

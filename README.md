@@ -12,7 +12,7 @@
 
 1. 下载镜像
 ```shell
-docker pull novicezk/wechat-midjourney:2.0.1
+docker pull novicezk/wechat-midjourney:2.0.2
 ```
 2. 启动容器
 ```shell
@@ -21,7 +21,7 @@ docker run -d --name wechat-midjourney \
  -p 4120:4120 \
  -v /xxx/xxx/config:/app/config \
  --restart=always \
- novicezk/wechat-midjourney:2.0.1
+ novicezk/wechat-midjourney:2.0.2
 
 # 或启动时添加配置
 docker run -d --name wechat-midjourney \
@@ -29,7 +29,7 @@ docker run -d --name wechat-midjourney \
  -e MJ_PROXY_ENDPOINT=http://172.17.0.1:8080/mj \
  -e MJ_NOFIFY_HOOK=http://172.17.0.1:4120/notify \
  --restart=always \
- novicezk/wechat-midjourney:2.0.1
+ novicezk/wechat-midjourney:2.0.2
 ```
 
 3. 查看启动日志，微信扫描二维码，若二维码无法扫码，复制二维码链接浏览器打开扫码
