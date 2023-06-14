@@ -55,4 +55,6 @@ npm run serve
 | :-----| :----: | :---- |
 | MJ_PROXY_ENDPOINT | 是 | midjourney代理服务的地址 |
 | MJ_NOFIFY_HOOK | 是 | 当前服务的回调接收地址 |
-| HTTP_PROXY | 否 | http代理地址 |
+| HTTP_PROXY | 否 | 访问cdn图片的代理地址 |
+
+无法访问 https://cdn.discordapp.com 时需设置`HTTP_PROXY`，示例值：http://127.0.0.1:7890
